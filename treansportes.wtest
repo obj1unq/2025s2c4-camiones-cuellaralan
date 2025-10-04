@@ -19,33 +19,49 @@ describe "carga y descarga de cosas en el camion" {
         bumblebee
       )) and camion.cosas().contains(knightRider)
     )
-    camion.descarga(bumblebee)                       
+    camion.descarga(bumblebee)
     assert.that(
-      (camion.cosas().size() == 1) and (camion.cosas().contains(
-        knightRider))
+      (camion.cosas().size() == 1) and camion.cosas().contains(knightRider)
     )
     camion.cargar(knightRider)
     assert.that(
-      (camion.cosas().size() == 1) and (camion.cosas().contains(
-        knightRider))
+      (camion.cosas().size() == 1) and camion.cosas().contains(knightRider)
     )
     camion.descarga(bumblebee)
   }
-
+  
   test "Camion con carga de 2 cosas con peso par" {
     camion.cargar(bumblebee)
     arenaAGranel.peso(50)
     camion.cargar(arenaAGranel)
     assert.that(camion.todaCargaEsPar())
   }
+  
   test "Camion con carga de 1 peso par y otro impar" {
     camion.cargar(bumblebee)
     arenaAGranel.peso(51)
     camion.cargar(arenaAGranel)
     assert.notThat(camion.todaCargaEsPar())
   }
+}
 
-  /*test "description" {
-    
-  }()*/
+describe "peso de la carga del camion con bumblebee y arena a granel(50kg)" {
+  method initialize() {
+    camion.cosas().clear()
+    console.println("ejecutado")
+    camion.cargar(bumblebee)
+    arenaAGranel.peso(50)
+    camion.cargar(arenaAGranel)
+  }
+  
+  test "Algo que pesa 50" {
+    assert.that(camion.cargaConPesoIgualA(50))
+  }
+  
+  test "Algo que pesa 800" {
+    assert.that(camion.cargaConPesoIgualA(800))
+  }
+  test "Algo que pesa 500" {
+    assert.notThat(camion.cargaConPesoIgualA(500))
+  }
 }

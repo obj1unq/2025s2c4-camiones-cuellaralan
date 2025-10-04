@@ -13,7 +13,7 @@ object arenaAGranel {
 object bumblebee {
 	var property transformacion = auto
 	
-	method peso() = 300
+	method peso() = 800
 	
 	method nivelPeligrosidad() = transformacion.nivelPeligrosidad()
 }
