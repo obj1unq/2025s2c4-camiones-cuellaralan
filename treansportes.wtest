@@ -31,4 +31,21 @@ describe "carga y descarga de cosas en el camion" {
     )
     camion.descarga(bumblebee)
   }
+
+  test "Camion con carga de 2 cosas con peso par" {
+    camion.cargar(bumblebee)
+    arenaAGranel.peso(50)
+    camion.cargar(arenaAGranel)
+    assert.that(camion.todaCargaEsPar())
+  }
+  test "Camion con carga de 1 peso par y otro impar" {
+    camion.cargar(bumblebee)
+    arenaAGranel.peso(51)
+    camion.cargar(arenaAGranel)
+    assert.notThat(camion.todaCargaEsPar())
+  }
+
+  /*test "description" {
+    
+  }()*/
 }
