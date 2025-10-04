@@ -1,0 +1,34 @@
+import camion.*
+import cosas.*
+
+describe "carga y descarga de cosas en el camion" {
+  method initialize() {
+    camion.cosas().clear()
+    console.println("ejecutado")
+  }
+  
+  test "camion descargado, carga y descarga cosas" {
+    assert.that(camion.cosas().isEmpty())
+    camion.cargar(bumblebee)
+    assert.that(
+      (camion.cosas().size() == 1) and camion.cosas().contains(bumblebee)
+    )
+    camion.cargar(knightRider)
+    assert.that(
+      ((camion.cosas().size() == 2) and camion.cosas().contains(
+        bumblebee
+      )) and camion.cosas().contains(knightRider)
+    )
+    camion.descarga(bumblebee)                       
+    assert.that(
+      (camion.cosas().size() == 1) and (camion.cosas().contains(
+        knightRider))
+    )
+    camion.cargar(knightRider)
+    assert.that(
+      (camion.cosas().size() == 1) and (camion.cosas().contains(
+        knightRider))
+    )
+    camion.descarga(bumblebee)
+  }
+}
