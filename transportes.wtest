@@ -150,3 +150,20 @@ describe "cosas peligrosas" {
     
   }
 }
+
+describe "Circular en ruta de nivel 20" {
+
+  method initialize() {
+    camion.cosas().clear()
+    camion.cargar(bumblebee) //15
+    camion.cargar(paqueteLadrillos) //15
+    paqueteLadrillos.cantidadLadrillos(300)
+  }
+  test "carga de bumblebee y 300 ladrillos -> puede circular" {
+    assert.that(camion.puedeCircularEnRutaDeNivel(20))    
+  }
+  test "carga de bumblebee y 400 ladrillos -> !puede circular" {
+    paqueteLadrillos.cantidadLadrillos(400)
+    assert.notThat(camion.puedeCircularEnRutaDeNivel(20))    
+  }
+}

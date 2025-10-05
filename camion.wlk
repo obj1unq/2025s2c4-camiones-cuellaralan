@@ -28,11 +28,15 @@ object camion {
 	method cargaConPeligrosidadDe(unaPeligrosidad) = cosas.filter(
 		{ paquete => paquete.nivelPeligrosidad() == unaPeligrosidad }
 	)
-
+	
 	method cargaConPeligrosidadMayorA(peligrosidad) = cosas.filter(
 		{ paquete => paquete.nivelPeligrosidad() > peligrosidad }
 	)
-
-	method cargaConPeligrosidadMayorAlPesoDe(unaCarga) = self.cargaConPeligrosidadMayorA(unaCarga.nivelPeligrosidad())
 	
+	method cargaConPeligrosidadMayorAlPesoDe(
+		unaCarga
+	) = self.cargaConPeligrosidadMayorA(unaCarga.nivelPeligrosidad())
+	
+	method puedeCircularEnRutaDeNivel(unNivel) = 
+	(!self.cargaExcedidaDePeso()) && self.cargaConPeligrosidadMayorA(unNivel).isEmpty()
 }
