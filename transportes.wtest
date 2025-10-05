@@ -167,3 +167,30 @@ describe "Circular en ruta de nivel 20" {
     assert.notThat(camion.puedeCircularEnRutaDeNivel(20))    
   }
 }
+
+describe "mas cosas: Contenedor y embalaje" {
+  test "contenedor portuario vacio -> peso 100 y peligrosidad 0" {
+    assert.equals(100, contenedor.peso())
+    assert.equals(contenedor.nivelPeligrosidad(), 0)
+  }
+  test "contenedor portuario con knightRider y 50kg de arena-> peso 650 y peligrosidad 10"{
+    contenedor.cargar(knightRider)
+    arenaAGranel.peso(50)
+    contenedor.cargar(arenaAGranel)
+    assert.equals(650, contenedor.peso())
+    assert.equals(10, contenedor.nivelPeligrosidad())
+  }
+  test "embalaje envuelve a knightRider -> mismo peso y la mitad de peligrosidad" {
+    embalaje.cosa(knightRider)
+    assert.equals(embalaje.peso(), knightRider.peso())
+    assert.equals(embalaje.nivelPeligrosidad(), knightRider.nivelPeligrosidad() / 2)
+  }
+
+  test "embalaje envuelve a bublebbe en modo auto -> peos 800 y peligrosidad 7.5" {
+    bumblebee.transformacion(auto)
+    embalaje.cosa(bumblebee)
+    assert.equals(800, embalaje.peso())
+    assert.equals(7.5, embalaje.nivelPeligrosidad())
+    
+  }
+}
