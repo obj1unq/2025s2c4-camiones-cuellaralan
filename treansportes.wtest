@@ -61,7 +61,60 @@ describe "peso de la carga del camion con bumblebee y arena a granel(50kg)" {
   test "Algo que pesa 800" {
     assert.that(camion.cargaConPesoIgualA(800))
   }
+  
   test "Algo que pesa 500" {
     assert.notThat(camion.cargaConPesoIgualA(500))
+  }
+}
+
+describe "peso total del camion y exceso de peso" {
+  method initialize() {
+    camion.cosas().clear()
+    console.println("ejecutado")
+    camion.cargar(bumblebee)
+  }
+  
+  test "peso total con bumblebee y 300 ladrillos-> no excede" {
+    paqueteLadrillos.cantidadLadrillos(300) //20kg
+    camion.cargar(paqueteLadrillos)
+    assert.equals(camion.pesoTotal(), 2400)
+    assert.notThat(camion.cargaExcedidaDePeso())
+  }
+  
+  test "peso total con bumblebee y 400 ladrillos-> excede" {
+    paqueteLadrillos.cantidadLadrillos(400) //20kg
+    camion.cargar(paqueteLadrillos)
+    assert.equals(camion.pesoTotal(), 2600)
+    assert.that(camion.cargaExcedidaDePeso())
+  }
+}
+
+describe "El de nivel de peligrosidad" {
+  method initialize() {
+    camion.cosas().clear()
+    bumblebee.transformacion(auto)
+    camion.cargar(bumblebee)
+    bateriaAntiaerea.tieneMisiles(false)
+    camion.cargar(bateriaAntiaerea)
+    camion.cargar(residuosRadiactivos)
+  }
+  
+  test "algo de nivel 0 -> bateria" {
+    assert.that(camion.cargaConPeligrosidadDe(0).size() == 1)
+    assert.that(camion.cargaConPeligrosidadDe(0).contains(bateriaAntiaerea))   
+  }
+  
+  test "algo de nivel 15 -> bumblebee" {
+    assert.that(camion.cargaConPeligrosidadDe(15).size() == 1)
+    assert.that(camion.cargaConPeligrosidadDe(15).contains(bumblebee))   
+  }
+  
+  test "algo de nivel 200 -> residuos" {
+    assert.that(camion.cargaConPeligrosidadDe(200).size() == 1)
+    assert.that(camion.cargaConPeligrosidadDe(200).contains(residuosRadiactivos))   
+  }
+  
+  test "algo de nivel 30 -> romper" {
+    assert.that(camion.cargaConPeligrosidadDe(30).isEmpty())
   }
 }
