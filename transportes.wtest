@@ -117,4 +117,36 @@ describe "El de nivel de peligrosidad" {
   test "algo de nivel 30 -> romper" {
     assert.that(camion.cargaConPeligrosidadDe(30).isEmpty())
   }
+
+  test "bumblebbe modo robot" {
+    bumblebee.transformacion(robot)
+    assert.that(camion.cargaConPeligrosidadDe(30).contains(bumblebee))   
+  }
+
+  test "bateria con misiles = carga con peligrosidad 100" {
+    bateriaAntiaerea.tieneMisiles(true)
+    assert.that(camion.cargaConPeligrosidadDe(100).contains(bateriaAntiaerea))
+  }
+}
+
+describe "cosas peligrosas" {
+
+  method initialize() {
+    camion.cosas().clear()
+    camion.cargar(knightRider) //15
+    camion.cargar(bateriaAntiaerea) //15
+    bateriaAntiaerea.tieneMisiles(true)
+  }
+  test "cosas que superan un nivel de peligrosidad" {
+    assert.that(camion.cargaConPeligrosidadMayorA(15).contains(bateriaAntiaerea))
+    assert.that(camion.cargaConPeligrosidadMayorA(2).contains(knightRider) && camion.cargaConPeligrosidadMayorA(2).contains(bateriaAntiaerea))
+    assert.that(camion.cargaConPeligrosidadMayorA(200).isEmpty())
+  }
+
+  test "cosas que superan el peso de otra cosa" {
+    assert.that(camion.cargaConPeligrosidadMayorAlPesoDe(bumblebee).contains(bateriaAntiaerea))
+    assert.that(camion.cargaConPeligrosidadMayorAlPesoDe(paqueteLadrillos).contains(knightRider) && camion.cargaConPeligrosidadMayorAlPesoDe(paqueteLadrillos).contains(bateriaAntiaerea))
+    assert.that(camion.cargaConPeligrosidadMayorAlPesoDe(residuosRadiactivos).isEmpty())
+    
+  }
 }
