@@ -37,6 +37,43 @@ object camion {
 		unaCarga
 	) = self.cargaConPeligrosidadMayorA(unaCarga.nivelPeligrosidad())
 	
-	method puedeCircularEnRutaDeNivel(unNivel) = 
-	(!self.cargaExcedidaDePeso()) && self.cargaConPeligrosidadMayorA(unNivel).isEmpty()
+	method puedeCircularEnRutaDeNivel(
+		unNivel
+	) = (!self.cargaExcedidaDePeso()) && self.cargaConPeligrosidadMayorA(
+		unNivel
+	).isEmpty()
+	
+	method tieneAlgoQuePesaEntre_Y_(min, max) = cosas.any(
+		{ paquete => paquete.peso().between(min, max) }
+	)
+	
+	method cargaMasPesada() {
+		var cosaMasPesada = null
+		if (cosas.isEmpty()) self.error("no hay cosas cargadas")
+		cosas.forEach(
+			{ cosa => if (cosaMasPesada == null) {
+					cosaMasPesada = cosa
+				} else {
+					if (cosa.peso() > cosaMasPesada.peso()) {
+						cosaMasPesada = cosa
+					}
+				} }
+		)
+		return cosaMasPesada
+	}
+	
+	method cargaMasPesada2() {
+		if(cosas.isEmpty()) 
+		{self.error("no hay cosas cargadas")}
+		var cosaMasPesada = null
+		cosas.forEach(
+			{ cosa => if (cosaMasPesada == null) {
+					cosaMasPesada = cosa
+				} else {
+					if (cosa.peso() > cosaMasPesada.peso()) {
+						cosaMasPesada = cosa
+					}
+				} }
+		)return cosaMasPesada
+	}
 }

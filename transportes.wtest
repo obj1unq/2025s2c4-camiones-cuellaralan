@@ -194,3 +194,38 @@ describe "mas cosas: Contenedor y embalaje" {
     
   }
 }
+
+describe "algo que pesa entre dos valores" {
+  method initialize() {
+    camion.cosas().clear()
+    camion.cargar(bumblebee)
+    paqueteLadrillos.cantidadLadrillos(300)
+    camion.cargar(paqueteLadrillos)
+  }
+
+  test "camion cargado con bumblebbe y 300 ladrillos -> tiene algo que pesa entre 5 y 700" {
+    assert.that(camion.tieneAlgoQuePesaEntre_Y_(5, 700))
+  }
+  test "camion cargado con bumblebbe y 300 ladrillos -> tiene algo que pesa entre 5 y 1000" {
+    assert.that(camion.tieneAlgoQuePesaEntre_Y_(5, 1000))
+  }
+  test "camion cargado con bumblebbe y 300 ladrillos -> tiene algo que pesa entre 900 y 1000" {
+    assert.notThat(camion.tieneAlgoQuePesaEntre_Y_(900, 1000))
+  }
+}
+
+describe "La cosa más pesada del camion" {
+  method initialize() {
+    camion.cosas().clear()
+  }
+  test "camion cargado con bumblebee y paquete de 300 ladrillos -> la cosa más pesada es bumblebee" {
+    camion.cargar(bumblebee)
+    paqueteLadrillos.cantidadLadrillos(300)
+    camion.cargar(paqueteLadrillos)
+    assert.equals(bumblebee, camion.cargaMasPesada())
+  }
+  test "camion vacio -> lanza error" {
+    assert.throwsExceptionWithMessage("no hay cosas cargadas",{camion.cargaMasPesada()})
+    //assert.throwsException(camion.cargaMasPesada2())
+  }
+}
