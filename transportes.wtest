@@ -1,5 +1,8 @@
 import camion.*
 import cosas.*
+import caminos.*
+import almacen.*
+
 
 describe "carga y descarga de cosas en el camion" {
   method initialize() {
@@ -320,4 +323,58 @@ describe "sufrir accidente" {
     assert.equals(0, paqueteLadrillos.cantidadLadrillos())
     assert.notThat(bateriaAntiaerea.tieneMisiles())
   }
+}
+
+describe "Transporte a Destino" {
+  method initialize(){
+    almacen.almacenar(knightRider)
+    almacen.almacenar(residuosRadiactivos)
+    camion.cargar(bumblebee)
+    bumblebee.transformacion(auto)
+    camion.cargar(arenaAGranel)
+    arenaAGranel.peso(50)
+  }
+  test "ruta 9 exitoso" {
+    camion.transportar(almacen, ruta9)
+    assert.that(almacen.cosas().contains(knightRider))
+    assert.that(almacen.cosas().contains(bumblebee))
+    assert.that(almacen.cosas().contains(residuosRadiactivos))
+    assert.that(almacen.cosas().contains(arenaAGranel))
+    assert.that(camion.cosas().isEmpty())
+  }
+
+  test "ruta 9 - fallido por peligrosidad" {
+    bumblebee.transformacion(robot)
+    assert.throwsExceptionWithMessage("No puede circular por ese camino", {camion.transportar(almacen, ruta9)})
+    assert.that(almacen.cosas().contains(knightRider))
+    assert.that(camion.cosas().contains(bumblebee))
+    assert.that(almacen.cosas().contains(residuosRadiactivos))
+    assert.that(camion.cosas().contains(arenaAGranel))
+  }
+  test "ruta 9 - fallido por exceso de peso" {
+    arenaAGranel.peso(2000)
+    assert.throwsExceptionWithMessage("No puede circular por ese camino", {camion.transportar(almacen, ruta9)})
+    assert.that(almacen.cosas().contains(knightRider))
+    assert.that(camion.cosas().contains(bumblebee))
+    assert.that(almacen.cosas().contains(residuosRadiactivos))
+    assert.that(camion.cosas().contains(arenaAGranel))
+  }
+  test "caminos vecinales - exitoso" {
+    caminosVecinales.pesoMaximoPermitido(2000)
+    camion.transportar(almacen, caminosVecinales)
+    assert.that(almacen.cosas().contains(knightRider))
+    assert.that(almacen.cosas().contains(bumblebee))
+    assert.that(almacen.cosas().contains(residuosRadiactivos))
+    assert.that(almacen.cosas().contains(arenaAGranel))
+    assert.that(camion.cosas().isEmpty())
+  }
+  test "caminos vecinales - fallido" {
+    caminosVecinales.pesoMaximoPermitido(300)    
+    assert.throwsExceptionWithMessage("No puede circular por ese camino", {camion.transportar(almacen, caminosVecinales)})
+    assert.that(almacen.cosas().contains(knightRider))
+    assert.that(camion.cosas().contains(bumblebee))
+    assert.that(almacen.cosas().contains(residuosRadiactivos))
+    assert.that(camion.cosas().contains(arenaAGranel))
+  }
+
 }

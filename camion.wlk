@@ -63,8 +63,7 @@ object camion {
 	}
 	
 	method cargaMasPesada2() {
-		if(cosas.isEmpty()) 
-		{self.error("no hay cosas cargadas")}
+		if (cosas.isEmpty()) self.error("no hay cosas cargadas")
 		var cosaMasPesada = null
 		cosas.forEach(
 			{ cosa => if (cosaMasPesada == null) {
@@ -74,14 +73,27 @@ object camion {
 						cosaMasPesada = cosa
 					}
 				} }
-		)return cosaMasPesada
+		)
+		return cosaMasPesada
+	}
+	
+	method todosLosPesosDeLasCosas() = cosas.map({ cosa => cosa.peso() })
+	
+	method totalDeBultos() = cosas.sum({ paquete => paquete.cantidadBultos() })
+	
+	method sufreAccidente() {
+		cosas.forEach({ paquete => paquete.reaccionarAlAccidente() })
+	}
+	
+	method transportar(destino, camino) {
+		if(!camino.soporaElVieaje()) {
+			self.error("No puede circular por ese camino")
+		}
+		destino.almacenarCarga(cosas)
+		self.vaciarCarga()
 	}
 
-	method todosLosPesosDeLasCosas() = cosas.map({ cosa => cosa.peso() })	
-
-	method totalDeBultos() = cosas.sum({ paquete => paquete.cantidadBultos()})
-
-	method sufreAccidente() {
-	  cosas.forEach({paquete => paquete.reaccionarAlAccidente()})
+	method vaciarCarga() {
+	  cosas.clear()
 	}
 }
