@@ -3,7 +3,6 @@ import cosas.*
 import caminos.*
 import almacen.*
 
-
 describe "carga y descarga de cosas en el camion" {
   method initialize() {
     camion.cosas().clear()
@@ -172,11 +171,15 @@ describe "Circular en ruta de nivel 20" {
 }
 
 describe "mas cosas: Contenedor y embalaje" {
+
   test "contenedor portuario vacio -> peso 100 y peligrosidad 0" {
+    //const cont = new Contenedor()
+    const contenedor = new Contenedor()
     assert.equals(100, contenedor.peso())
     assert.equals(contenedor.nivelPeligrosidad(), 0)
   }
   test "contenedor portuario con knightRider y 50kg de arena-> peso 650 y peligrosidad 10"{
+    const contenedor = new Contenedor()
     contenedor.cargar(knightRider)
     arenaAGranel.peso(50)
     contenedor.cargar(arenaAGranel)
@@ -184,14 +187,14 @@ describe "mas cosas: Contenedor y embalaje" {
     assert.equals(10, contenedor.nivelPeligrosidad())
   }
   test "embalaje envuelve a knightRider -> mismo peso y la mitad de peligrosidad" {
-    embalaje.cosa(knightRider)
+    const embalaje = new Embalaje( cosa = knightRider)
     assert.equals(embalaje.peso(), knightRider.peso())
     assert.equals(embalaje.nivelPeligrosidad(), knightRider.nivelPeligrosidad() / 2)
   }
 
   test "embalaje envuelve a bublebbe en modo auto -> peos 800 y peligrosidad 7.5" {
     bumblebee.transformacion(auto)
-    embalaje.cosa(bumblebee)
+    const embalaje = new Embalaje( cosa = bumblebee)
     assert.equals(800, embalaje.peso())
     assert.equals(7.5, embalaje.nivelPeligrosidad())
     
@@ -246,14 +249,15 @@ describe "pesos de todas las cosas" {
 describe "total de bultos" {
   method initialize() {
     camion.cosas().clear()
-    contenedor.cosas().clear()
+    //contenedor.cosas().clear()
   }
   test "caso 1: camion con contenedor con knight rider y bumblebee + embalaje envolviendo residuos radioactivos +
   arena a granel + 50 ladrillos + bateria antiaerea sin misiles -> bultos = 9 " {
+    const contenedor = new Contenedor()
     contenedor.cargar(knightRider) //1 bulto
     contenedor.cargar(bumblebee) //2 bultos
     camion.cargar(contenedor) //1 bulto
-    embalaje.cosa(residuosRadiactivos) //1 bulto
+    const embalaje = new Embalaje( cosa = residuosRadiactivos)
     camion.cargar(embalaje) //1 bulto
     camion.cargar(arenaAGranel) //1 bulto
     paqueteLadrillos.cantidadLadrillos(50) //1 bulto
@@ -264,6 +268,7 @@ describe "total de bultos" {
     
   }
   test "caso 2: camion con contenedor vacio + 150 ladrillos + bateria antiaerea con misiles -> bultos = 5 " {
+    const contenedor = new Contenedor()
     camion.cargar(contenedor) //1 bulto
     paqueteLadrillos.cantidadLadrillos(150) //2 bultos
     camion.cargar(paqueteLadrillos) //2 bultos
@@ -284,14 +289,15 @@ describe "total de bultos" {
 describe "sufrir accidente" {
   method initialize() {
     camion.cosas().clear()
-    contenedor.cosas().clear()
+    //contenedor.cosas().clear()
   }
   test "accidente N°1"{
+    const contenedor = new Contenedor()
     contenedor.cargar(knightRider) 
     contenedor.cargar(bumblebee)
     bumblebee.transformacion(auto) 
     camion.cargar(contenedor)
-    embalaje.cosa(residuosRadiactivos)
+    const embalaje = new Embalaje(cosa = residuosRadiactivos)
     residuosRadiactivos.peso(30)
     camion.cargar(embalaje)
     arenaAGranel.peso(50)
@@ -378,3 +384,4 @@ describe "Transporte a Destino" {
   }
 
 }
+

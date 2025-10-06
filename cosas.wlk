@@ -12,19 +12,6 @@ object knightRider {
 	}
 }
 
-object arenaAGranel {
-	var property peso = 100
-	const peligrosidad = 1
-	const bultos = 1
-	
-	method nivelPeligrosidad() = peligrosidad
-	
-	method cantidadBultos() = bultos
-	
-	method reaccionarAlAccidente() {
-		peso += 20
-	}
-}
 
 object bumblebee {
 	var property transformacion = auto
@@ -55,6 +42,20 @@ object robot {
 	method nivelPeligrosidad() = peligrosidad
 	
 	method modoContrario() = auto
+}
+
+object arenaAGranel {
+	var property peso = 100
+	const peligrosidad = 1
+	const bultos = 1
+	
+	method nivelPeligrosidad() = peligrosidad
+	
+	method cantidadBultos() = bultos
+	
+	method reaccionarAlAccidente() {
+		peso += 20
+	}
 }
 
 object paqueteLadrillos {
@@ -112,7 +113,7 @@ object residuosRadiactivos {
 	}
 }
 
-object contenedor {
+class Contenedor {
 	const property cosas = #{}
 	const property tara = 100
 	const bultos = 1
@@ -138,7 +139,7 @@ object contenedor {
 	}
 }
 
-object embalaje {
+class Embalaje {
 	var property cosa = bumblebee
 	const bultos = 2
 	
