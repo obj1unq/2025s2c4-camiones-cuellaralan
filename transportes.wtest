@@ -277,3 +277,47 @@ describe "total de bultos" {
     
   }
 }
+
+describe "sufrir accidente" {
+  method initialize() {
+    camion.cosas().clear()
+    contenedor.cosas().clear()
+  }
+  test "accidente N°1"{
+    contenedor.cargar(knightRider) 
+    contenedor.cargar(bumblebee)
+    bumblebee.transformacion(auto) 
+    camion.cargar(contenedor)
+    embalaje.cosa(residuosRadiactivos)
+    residuosRadiactivos.peso(30)
+    camion.cargar(embalaje)
+    arenaAGranel.peso(50)
+    camion.cargar(arenaAGranel)
+    paqueteLadrillos.cantidadLadrillos(100)
+    camion.cargar(paqueteLadrillos)
+    bateriaAntiaerea.tieneMisiles(true)
+    camion.cargar(bateriaAntiaerea)
+    camion.sufreAccidente()
+    assert.equals(robot, bumblebee.transformacion())
+    assert.equals(30, residuosRadiactivos.peso())
+    assert.equals(70, arenaAGranel.peso())
+    assert.equals(88, paqueteLadrillos.cantidadLadrillos())
+    assert.notThat(bateriaAntiaerea.tieneMisiles())
+  }
+
+  test "accidente N°2" {
+    camion.cargar(bumblebee)
+    bumblebee.transformacion(robot)
+    camion.cargar(residuosRadiactivos)
+    residuosRadiactivos.peso(30)
+    camion.cargar(paqueteLadrillos)
+    paqueteLadrillos.cantidadLadrillos(10)
+    camion.cargar(bateriaAntiaerea)
+    bateriaAntiaerea.tieneMisiles(false)
+    camion.sufreAccidente()
+    assert.equals(auto, bumblebee.transformacion())
+    assert.equals(45, residuosRadiactivos.peso())
+    assert.equals(0, paqueteLadrillos.cantidadLadrillos())
+    assert.notThat(bateriaAntiaerea.tieneMisiles())
+  }
+}

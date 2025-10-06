@@ -80,4 +80,8 @@ object camion {
 	method todosLosPesosDeLasCosas() = cosas.map({ cosa => cosa.peso() })	
 
 	method totalDeBultos() = cosas.sum({ paquete => paquete.cantidadBultos()})
+
+	method sufreAccidente() {
+	  cosas.forEach({paquete => paquete.reaccionarAlAccidente()})
+	}
 }
