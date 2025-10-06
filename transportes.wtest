@@ -229,3 +229,51 @@ describe "La cosa más pesada del camion" {
     //assert.throwsException(camion.cargaMasPesada2())
   }
 }
+
+describe "pesos de todas las cosas" {
+  test "camion cargado con bumblebee y 300 ladrillos -> pesos son 800 y 600" {
+    camion.cargar(bumblebee)
+    paqueteLadrillos.cantidadLadrillos(300)
+    camion.cargar(paqueteLadrillos)
+    assert.equals([800, 600], camion.todosLosPesosDeLasCosas())
+  }
+
+}
+
+describe "total de bultos" {
+  method initialize() {
+    camion.cosas().clear()
+    contenedor.cosas().clear()
+  }
+  test "caso 1: camion con contenedor con knight rider y bumblebee + embalaje envolviendo residuos radioactivos +
+  arena a granel + 50 ladrillos + bateria antiaerea sin misiles -> bultos = 9 " {
+    contenedor.cargar(knightRider) //1 bulto
+    contenedor.cargar(bumblebee) //2 bultos
+    camion.cargar(contenedor) //1 bulto
+    embalaje.cosa(residuosRadiactivos) //1 bulto
+    camion.cargar(embalaje) //1 bulto
+    camion.cargar(arenaAGranel) //1 bulto
+    paqueteLadrillos.cantidadLadrillos(50) //1 bulto
+    camion.cargar(paqueteLadrillos) //1 bulto
+    bateriaAntiaerea.tieneMisiles(false) //1 bulto
+    camion.cargar(bateriaAntiaerea) //1 bulto
+    assert.equals(9, camion.totalDeBultos())
+    
+  }
+  test "caso 2: camion con contenedor vacio + 150 ladrillos + bateria antiaerea con misiles -> bultos = 5 " {
+    camion.cargar(contenedor) //1 bulto
+    paqueteLadrillos.cantidadLadrillos(150) //2 bultos
+    camion.cargar(paqueteLadrillos) //2 bultos
+    bateriaAntiaerea.tieneMisiles(true) //2 bultos
+    camion.cargar(bateriaAntiaerea) //2 bultos
+    assert.equals(5, camion.totalDeBultos()) 
+  }
+
+  test "caso 3: camion con 350 ladrillos + arena a granel -> bultos = 4 " {
+    paqueteLadrillos.cantidadLadrillos(350) //3 bultos
+    camion.cargar(paqueteLadrillos) //3 bultos
+    camion.cargar(arenaAGranel) //1 bulto
+    assert.equals(4, camion.totalDeBultos())
+    
+  }
+}
